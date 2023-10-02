@@ -148,18 +148,18 @@ stages {
                 aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 847280823661.dkr.ecr.us-east-1.amazonaws.com
                 echo logged in ECR
                 echo Delete Docker Images
-                
+                Commit=$(git log --oneline | head -n 1 | tr " " "-" | sed -e 's/([^()]*)//g' | sed 's/.$//')
                 commit_id=$(git rev-parse --short=10 HEAD)                
                 echo Docker Build
                 
                 echo Taging Image
                 docker tag test-app:latest 847280823661.dkr.ecr.us-east-1.amazonaws.com/test-app:latest
-                docker tag test-app:latest 847280823661.dkr.ecr.us-east-1.amazonaws.com/test-rollback:$commit_id
+                docker tag test-app:latest 847280823661.dkr.ecr.us-east-1.amazonaws.com/test-rollback:$Commit
                 echo Remove old Image from ECR
                 aws ecr batch-delete-image --repository-name test-app --image-ids imageTag=latest --region us-east-1
                 echo Pushing image ECR
                 docker push 847280823661.dkr.ecr.us-east-1.amazonaws.com/test-app:latest
-                docker push 847280823661.dkr.ecr.us-east-1.amazonaws.com/test-rollback:$commit_id
+                docker push 847280823661.dkr.ecr.us-east-1.amazonaws.com/test-rollback:$Commit
                               
                 aws ecs update-service --cluster scrum-backend-cluster --service nodejs-backend --region us-east-1 --force-new-deployment 
                 sleep 15
@@ -168,7 +168,7 @@ stages {
                 echo "==========Removing Docker images from Jenkins========="
                 docker rmi -f 847280823661.dkr.ecr.us-east-1.amazonaws.com/test-app:latest
                 docker rmi -f test-app:latest
-                docker rmi -f 847280823661.dkr.ecr.us-east-1.amazonaws.com/test-app-rollback:$commit_id
+                docker rmi -f 847280823661.dkr.ecr.us-east-1.amazonaws.com/test-app-rollback:$Commit
                 
                 '''
                 } 
