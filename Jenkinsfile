@@ -167,7 +167,6 @@ stages {
                 
                 echo "==========Removing Docker images from Jenkins========="
                 docker rmi -f 847280823661.dkr.ecr.us-east-1.amazonaws.com/test-app:latest
-                docker rmi -f 847280823661.dkr.ecr.us-east-1.amazonaws.com/test-rollback:$Commit
                 docker rmi -f test-app:latest
                 docker rmi -f test-rollback:$Commit
                 '''
