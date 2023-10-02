@@ -2,39 +2,39 @@ pipeline {
 agent any
 tools {nodejs "nodejs"}
 stages {
-        stage('user-identification') {
-         steps {
-             script {
-                    try {
-                        withCredentials(
-                            [string(credentialsId: 'user_verification', variable: 'user_verification')]
-                        ) 
-                        {
-                            def askpass = input(
-                            message: 'Please enter the password',
-                            parameters: [
-                                password(defaultValue: '',
-                                        description: '',
-                                        name: 'password')])  
-                            if ("$user_verification" == "$askpass") {                                                           
-                                sh """ 
-                                echo "Password Matched"
-                                """
-                            }
-                            else {
-                                sh "echo Wrong Password"
-                                sh "exit 1"
-                            }
-                        }
-                    }
-                    catch (Exception e) {
-                        echo "FAILED ${e}"
-                        currentBuild.result = 'FAILURE'
-                        throw e
-                    }
-                }
-            }
-        }
+        // stage('user-identification') {
+        //  steps {
+        //      script {
+        //             try {
+        //                 withCredentials(
+        //                     [string(credentialsId: 'user_verification', variable: 'user_verification')]
+        //                 ) 
+        //                 {
+        //                     def askpass = input(
+        //                     message: 'Please enter the password',
+        //                     parameters: [
+        //                         password(defaultValue: '',
+        //                                 description: '',
+        //                                 name: 'password')])  
+        //                     if ("$user_verification" == "$askpass") {                                                           
+        //                         sh """ 
+        //                         echo "Password Matched"
+        //                         """
+        //                     }
+        //                     else {
+        //                         sh "echo Wrong Password"
+        //                         sh "exit 1"
+        //                     }
+        //                 }
+        //             }
+        //             catch (Exception e) {
+        //                 echo "FAILED ${e}"
+        //                 currentBuild.result = 'FAILURE'
+        //                 throw e
+        //             }
+        //         }
+        //     }
+        // }
 
     stage('Remove old code') {
         steps {
