@@ -166,7 +166,6 @@ stages {
                 aws ecs list-tasks --cluster scrum-backend-cluster --service nodejs-backend --region us-east-1              
                 
                 echo "==========Removing Docker images from Jenkins========="
-                docker rmi -f 847280823661.dkr.ecr.us-east-1.amazonaws.com/test-app:latest
                 docker rmi -f test-app:latest
                 docker rmi -f test-rollback:$Commit
                 '''
